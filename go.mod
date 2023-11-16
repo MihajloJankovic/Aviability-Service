@@ -1,4 +1,4 @@
-module github.com/MihajloJankovic/Auth-Service
+module github.com/MihajloJankovic/Aviability-Service
 
 go 1.20
 

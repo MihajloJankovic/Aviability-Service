@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: akkks.proto
 
-package gene
+package ggws
 
 import (
 	context "context"

@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: app.proto
 
-package glavnoz
+package gene
 
 import (
 	context "context"
@@ -29,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccommodationAviabilityClient interface {
 	GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*Emptyb, error)
-	GetAllforAccomendation(ctx context.Context, in *Emptyb, opts ...grpc.CallOption) (*DummyList, error)
+	GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyList, error)
 	SetAccommodationAviability(ctx context.Context, in *CheckSet, opts ...grpc.CallOption) (*Emptyb, error)
 }
 
@@ -50,7 +50,7 @@ func (c *accommodationAviabilityClient) GetAccommodationCheck(ctx context.Contex
 	return out, nil
 }
 
-func (c *accommodationAviabilityClient) GetAllforAccomendation(ctx context.Context, in *Emptyb, opts ...grpc.CallOption) (*DummyList, error) {
+func (c *accommodationAviabilityClient) GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyList, error) {
 	out := new(DummyList)
 	err := c.cc.Invoke(ctx, AccommodationAviability_GetAllforAccomendation_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -73,7 +73,7 @@ func (c *accommodationAviabilityClient) SetAccommodationAviability(ctx context.C
 // for forward compatibility
 type AccommodationAviabilityServer interface {
 	GetAccommodationCheck(context.Context, *CheckRequest) (*Emptyb, error)
-	GetAllforAccomendation(context.Context, *Emptyb) (*DummyList, error)
+	GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyList, error)
 	SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error)
 	mustEmbedUnimplementedAccommodationAviabilityServer()
 }
@@ -85,7 +85,7 @@ type UnimplementedAccommodationAviabilityServer struct {
 func (UnimplementedAccommodationAviabilityServer) GetAccommodationCheck(context.Context, *CheckRequest) (*Emptyb, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccommodationCheck not implemented")
 }
-func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context.Context, *Emptyb) (*DummyList, error) {
+func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllforAccomendation not implemented")
 }
 func (UnimplementedAccommodationAviabilityServer) SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error) {
@@ -124,7 +124,7 @@ func _AccommodationAviability_GetAccommodationCheck_Handler(srv interface{}, ctx
 }
 
 func _AccommodationAviability_GetAllforAccomendation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Emptyb)
+	in := new(GetAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func _AccommodationAviability_GetAllforAccomendation_Handler(srv interface{}, ct
 		FullMethod: AccommodationAviability_GetAllforAccomendation_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccommodationAviabilityServer).GetAllforAccomendation(ctx, req.(*Emptyb))
+		return srv.(AccommodationAviabilityServer).GetAllforAccomendation(ctx, req.(*GetAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"errors"
 	protos "github.com/MihajloJankovic/Aviability-Service/protos/main"
 	"log"
 )
@@ -17,11 +18,47 @@ func NewServer(l *log.Logger, r *AviabilityRepo) *myAviabilityServer {
 	return &myAviabilityServer{*new(protos.UnimplementedAccommodationAviabilityServer), l, r}
 }
 func (s myAviabilityServer) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.Emptyb, error) {
-	return nil, nil
+	out, err := s.repo.GetAccommodationCheck(xtx, in)
+	if err != nil {
+		s.logger.Println(err)
+		return nil, err
+	}
+	return out, nil
 }
-func (s myAviabilityServer) GetAllforAccomendation(xtx context.Context, in *protos.Emptyb) (*protos.DummyList, error) {
-	return nil, nil
+func (s myAviabilityServer) GetAllforAccomendation(ctx context.Context, in *protos.GetAllRequest) (*protos.DummyList, error) {
+	out, err := s.repo.GetAllforAccomendation(ctx, in)
+	if err != nil {
+		s.logger.Println(err)
+		return nil, err
+	}
+	ss := new(protos.DummyList)
+	ss.Dummy = out
+	return ss, nil
 }
 func (s myAviabilityServer) SetAccommodationAviability(xtx context.Context, in *protos.CheckSet) (*protos.Emptyb, error) {
-	return nil, nil
+
+	if in.GetPricePerPerson() != 0 && in.GetNumberOfPeople() != 0 {
+		in.PriceHole = 0
+		bb, err := s.repo.SetAccommodationAviability(xtx, in)
+		if err != nil {
+			s.logger.Println(err)
+			return nil, err
+		}
+		return bb, nil
+	} else {
+		if in.GetPriceHole() != 0 {
+			in.PricePerPerson = 0
+			in.NumberOfPeople = 0
+			bb, err := s.repo.SetAccommodationAviability(xtx, in)
+			if err != nil {
+				s.logger.Println(err)
+				return nil, err
+			}
+			return bb, nil
+		} else {
+			err := errors.New("inalid data not posible")
+			return nil, err
+		}
+	}
+
 }

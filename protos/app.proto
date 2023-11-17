@@ -3,21 +3,25 @@ syntax = "proto3";
 option go_package = "../main";
 service AccommodationAviability {
   rpc GetAccommodationCheck(CheckRequest) returns (Emptyb);
-  rpc GetAllforAccomendation(Emptyb) returns (DummyList);
+  rpc GetAllforAccomendation(GetAllRequest) returns (DummyList);
   rpc SetAccommodationAviability(CheckSet) returns (Emptyb);
 }
 message DummyList {
-  repeated CheckRequest dummy = 1;
+  repeated CheckSet dummy = 1;
 }
 message  CheckRequest {
+  string id = 1;
+  string from = 2;
+  string to = 3;
+}
+message  GetAllRequest {
   string id = 1;
 }
 message  CheckSet {
   string uid = 1;
-  string name = 2;
-  string location = 4;
-  string adress = 5;
-  string email = 6;
+  int32 price_per_person = 2;
+  int32 price_hole= 3;
+  int32 number_of_people= 4;
 
 }
 message  Emptyb {

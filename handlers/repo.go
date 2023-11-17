@@ -15,8 +15,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-
 type AviabilityRepo struct {
 	cli    *mongo.Client
 	logger *log.Logger
@@ -67,12 +65,99 @@ func (pr *AviabilityRepo) Ping() {
 	}
 	fmt.Println(databases)
 }
-func GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.Emptyb, error) {
+func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.Emptyb, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	profileCollection := pr.getCollection()
+	layout := "02-01-2006"
+	Timefrom, err := time.Parse(layout, in.GetFrom())
+	if err != nil {
+		fmt.Println("Error parsing time:", err)
+		return nil, err
+	}
+	Timeto, err := time.Parse(layout, in.GetFrom())
+	if err != nil {
+		fmt.Println("Error parsing time:", err)
+		return nil, err
+	}
+	// Define the filter to find documents where 'created' is greater than the specified date
+	filter := bson.D{
+		{"from", bson.D{
+			{"$gt", Timefrom},
+		}},
+		{"to", bson.D{
+			{"$lt", Timeto},
+		}},
+	}
+
+	// Perform the find operation
+	cursor, err := profileCollection.Find(ctx, filter)
+	if err != nil {
+		log.Println(err)
+	}
+	defer cursor.Close(ctx)
+
+	// Iterate over the results
+	for cursor.Next(ctx) {
+		var result bson.M
+
+		err := cursor.Decode(&result)
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println(result)
+	}
+
+	// Check for errors from iterating over cursor
+	if err := cursor.Err(); err != nil {
+		log.Println(err)
+	}
+	return new(protos.Emptyb), nil
+}
+func (pr *AviabilityRepo) GetAllforAccomendation(xtx context.Context, in *protos.GetAllRequest) ([]*protos.CheckSet, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	accommodationCollection := pr.getCollection()
+	var accommodationAviabilitysSlice []*protos.CheckSet
+
+	// Assuming you have a filter based on the email, modify the filter as needed
+	filter := bson.M{"email": in.GetId()}
+
+	accommodationAviabilityCursor, err := accommodationCollection.Find(ctx, filter)
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	defer func(accommodationCursor *mongo.Cursor, ctx context.Context) {
+		err := accommodationCursor.Close(ctx)
+		if err != nil {
+			pr.logger.Println(err)
+		}
+	}(accommodationAviabilityCursor, ctx)
+
+	for accommodationAviabilityCursor.Next(ctx) {
+		var accommodation protos.CheckSet
+		if err := accommodationAviabilityCursor.Decode(&accommodation); err != nil {
+			pr.logger.Println(err)
+			return nil, err
+		}
+		accommodationAviabilitysSlice = append(accommodationAviabilitysSlice, &accommodation)
+	}
+
+	if err := accommodationAviabilityCursor.Err(); err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+
+	return accommodationAviabilitysSlice, nil
+}
+func (pr *AviabilityRepo) SetAccommodationAviability(xtx context.Context, in *protos.CheckSet) (*protos.Emptyb, error) {
 	return nil, nil
 }
-func GetAllforAccomendation(xtx context.Context, in *protos.Emptyb) (*protos.DummyList, error) {
-	return nil, nil
-}
-func SetAccommodationAviability(xtx context.Context, in *protos.CheckSet) (*protos.Emptyb, error) {
-	return nil, nil
+func (pr *AviabilityRepo) getCollection() *mongo.Collection {
+	profileDatabase := pr.cli.Database("mongoAviability")
+	profileCollection := profileDatabase.Collection("aviability")
+	return profileCollection
 }

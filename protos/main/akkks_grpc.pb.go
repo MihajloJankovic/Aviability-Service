@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: akkks.proto
 
-package ggws
+package mainaas
 
 import (
 	context "context"
@@ -29,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccommodationAviabilityClient interface {
 	GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*Emptyb, error)
-	GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyList, error)
+	GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyLista, error)
 	SetAccommodationAviability(ctx context.Context, in *CheckSet, opts ...grpc.CallOption) (*Emptyb, error)
 }
 
@@ -50,8 +50,8 @@ func (c *accommodationAviabilityClient) GetAccommodationCheck(ctx context.Contex
 	return out, nil
 }
 
-func (c *accommodationAviabilityClient) GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyList, error) {
-	out := new(DummyList)
+func (c *accommodationAviabilityClient) GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyLista, error) {
+	out := new(DummyLista)
 	err := c.cc.Invoke(ctx, AccommodationAviability_GetAllforAccomendation_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (c *accommodationAviabilityClient) SetAccommodationAviability(ctx context.C
 // for forward compatibility
 type AccommodationAviabilityServer interface {
 	GetAccommodationCheck(context.Context, *CheckRequest) (*Emptyb, error)
-	GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyList, error)
+	GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyLista, error)
 	SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error)
 	mustEmbedUnimplementedAccommodationAviabilityServer()
 }
@@ -85,7 +85,7 @@ type UnimplementedAccommodationAviabilityServer struct {
 func (UnimplementedAccommodationAviabilityServer) GetAccommodationCheck(context.Context, *CheckRequest) (*Emptyb, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccommodationCheck not implemented")
 }
-func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyList, error) {
+func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyLista, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllforAccomendation not implemented")
 }
 func (UnimplementedAccommodationAviabilityServer) SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error) {

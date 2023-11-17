@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: akkks.proto
 
-package mainaas
+package aa
 
 import (
 	context "context"

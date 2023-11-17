@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0-devel
 // 	protoc        v3.19.6
-// source: app.proto
+// source: akkks.proto
 
 package gene
 

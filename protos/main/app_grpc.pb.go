@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.6
-// source: app.proto
+// source: akkks.proto
 
 package gene
 
@@ -180,5 +180,5 @@ var AccommodationAviability_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "app.proto",
+	Metadata: "akkks.proto",
 }

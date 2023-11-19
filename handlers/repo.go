@@ -94,6 +94,10 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 
 	// Perform the find operation
 	cursor, err := profileCollection.Find(ctx, filter)
+	fmt.Println(cursor)
+	fmt.Println(Timefrom)
+	fmt.Println(Timeto)
+	fmt.Println(cursor.Next(ctx))
 	if err != nil {
 		log.Println(err)
 	}

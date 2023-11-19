@@ -99,22 +99,14 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 	}
 	defer cursor.Close(ctx)
 	if cursor.Next(context.TODO()) {
-		// Iterate over the results
-		for cursor.Next(ctx) {
-			var result bson.M
-
-			err := cursor.Decode(&result)
-			if err != nil {
-				log.Println(err)
-			}
-			fmt.Println(result)
+		// Cursor is not empty, process the documents
+		var result protos.Emptyb // Define the structure to hold your document data
+		err := cursor.Decode(&result)
+		if err != nil {
+			log.Fatal(err)
 		}
-
-		// Check for errors from iterating over cursor
-		if err := cursor.Err(); err != nil {
-			log.Println(err)
-		}
-		return new(protos.Emptyb), nil
+		fmt.Println("Document found:", result)
+		return &result, nil
 	} else {
 		return nil, errors.New("No result")
 	}

@@ -87,7 +87,6 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 	fmt.Println(cursor)
 	fmt.Println(in.GetFrom())
 	fmt.Println(in.GetTo())
-	fmt.Println(cursor.Next(ctx))
 	if err != nil {
 		log.Println(err)
 	}

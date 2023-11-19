@@ -164,7 +164,7 @@ func (pr *AviabilityRepo) SetAccommodationAviability(xtx context.Context, in *pr
 		return nil, err
 	}
 	pr.logger.Printf("Documents ID: %v\n", result.InsertedID)
-	return nil, nil
+	return new(protos.Emptyb), nil
 }
 func (pr *AviabilityRepo) getCollection() *mongo.Collection {
 	profileDatabase := pr.cli.Database("mongoAviability")

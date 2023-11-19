@@ -71,7 +71,7 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 	defer cancel()
 
 	profileCollection := pr.getCollection()
-	layout := "02-01-2006"
+	layout := "2006-02-01"
 	Timefrom, err := time.Parse(layout, in.GetFrom())
 	if err != nil {
 		fmt.Println("Error parsing time:", err)

@@ -103,7 +103,7 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 		var result protos.Emptyb // Define the structure to hold your document data
 		err := cursor.Decode(&result)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 		fmt.Println("Document found:", result)
 		return &result, nil

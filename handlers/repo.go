@@ -123,7 +123,7 @@ func (pr *AviabilityRepo) GetAllforAccomendation(xtx context.Context, in *protos
 	var accommodationAviabilitysSlice []*protos.CheckSet
 
 	// Assuming you have a filter based on the email, modify the filter as needed
-	filter := bson.M{"email": in.GetId()}
+	filter := bson.M{"uid": in.GetId()}
 
 	accommodationAviabilityCursor, err := accommodationCollection.Find(ctx, filter)
 	if err != nil {

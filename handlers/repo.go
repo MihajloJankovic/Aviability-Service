@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	protos "github.com/MihajloJankovic/Aviability-Service/protos/main"
 	"log"
@@ -97,23 +98,27 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 		log.Println(err)
 	}
 	defer cursor.Close(ctx)
+	if cursor.Next(context.TODO()){
+		// Iterate over the results
+		for cursor.Next(ctx) {
+			var result bson.M
 
-	// Iterate over the results
-	for cursor.Next(ctx) {
-		var result bson.M
+			err := cursor.Decode(&result)
+			if err != nil {
+				log.Println(err)
+			}
+			fmt.Println(result)
+		}
 
-		err := cursor.Decode(&result)
-		if err != nil {
+		// Check for errors from iterating over cursor
+		if err := cursor.Err(); err != nil {
 			log.Println(err)
 		}
-		fmt.Println(result)
+		return new(protos.Emptyb), nil
+	}else{
+		return nil,errors.New("No result")
 	}
 
-	// Check for errors from iterating over cursor
-	if err := cursor.Err(); err != nil {
-		log.Println(err)
-	}
-	return new(protos.Emptyb), nil
 }
 func (pr *AviabilityRepo) GetAllforAccomendation(xtx context.Context, in *protos.GetAllRequest) ([]*protos.CheckSet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

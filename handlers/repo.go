@@ -85,10 +85,10 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 	// Define the filter to find documents where 'created' is greater than the specified date
 	filter := bson.D{
 		{"from", bson.D{
-			{"$gt", Timefrom},
+			{"$lt", Timefrom},
 		}},
 		{"to", bson.D{
-			{"$lt", Timeto},
+			{"$gt", Timeto},
 		}},
 	}
 
@@ -98,7 +98,7 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 		log.Println(err)
 	}
 	defer cursor.Close(ctx)
-	if cursor.Next(context.TODO()){
+	if cursor.Next(context.TODO()) {
 		// Iterate over the results
 		for cursor.Next(ctx) {
 			var result bson.M
@@ -115,8 +115,8 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 			log.Println(err)
 		}
 		return new(protos.Emptyb), nil
-	}else{
-		return nil,errors.New("No result")
+	} else {
+		return nil, errors.New("No result")
 	}
 
 }

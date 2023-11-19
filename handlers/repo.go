@@ -71,32 +71,22 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 	defer cancel()
 
 	profileCollection := pr.getCollection()
-	layout := "2006-02-01"
-	Timefrom, err := time.Parse(layout, in.GetFrom())
-	if err != nil {
-		fmt.Println("Error parsing time:", err)
-		return nil, err
-	}
-	Timeto, err := time.Parse(layout, in.GetFrom())
-	if err != nil {
-		fmt.Println("Error parsing time:", err)
-		return nil, err
-	}
+
 	// Define the filter to find documents where 'created' is greater than the specified date
 	filter := bson.D{
 		{"from", bson.D{
-			{"$lt", Timefrom},
+			{"$lt", in.GetFrom()},
 		}},
 		{"to", bson.D{
-			{"$gt", Timeto},
+			{"$gt", in.GetTo()},
 		}},
 	}
 
 	// Perform the find operation
 	cursor, err := profileCollection.Find(ctx, filter)
 	fmt.Println(cursor)
-	fmt.Println(Timefrom)
-	fmt.Println(Timeto)
+	fmt.Println(in.GetFrom())
+	fmt.Println(in.GetTo())
 	fmt.Println(cursor.Next(ctx))
 	if err != nil {
 		log.Println(err)

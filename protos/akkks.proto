@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "../main";
 service AccommodationAviability {
-  rpc GetAccommodationCheck(CheckRequest) returns (Emptyb);
+  rpc GetAccommodationCheck(CheckRequest) returns (CheckSet);
   rpc GetAllforAccomendation(GetAllRequest) returns (DummyLista3);
   rpc SetAccommodationAviability(CheckSet) returns (Emptyb);
 }

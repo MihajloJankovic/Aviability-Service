@@ -66,7 +66,7 @@ func (pr *AviabilityRepo) Ping() {
 	}
 	fmt.Println(databases)
 }
-func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.Emptyb, error) {
+func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.CheckSet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -81,23 +81,22 @@ func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.
 			{"$gt", in.GetTo()},
 		}},
 	}
-
 	// Perform the find operation
-	cursor, err := profileCollection.Find(ctx, filter)
-	fmt.Println(cursor)
-	fmt.Println(in.GetFrom())
-	fmt.Println(in.GetTo())
+	accommodationAviabilityCursor, err := profileCollection.Find(ctx, filter)
 	if err != nil {
 		log.Println(err)
 	}
-	defer cursor.Close(ctx)
-	if cursor.Next(ctx) {
+	defer accommodationAviabilityCursor.Close(ctx)
 
-		return new(protos.Emptyb), nil
-	} else {
-		return nil, errors.New("No result")
+	for accommodationAviabilityCursor.Next(ctx) {
+		var accommodation protos.CheckSet
+		if err := accommodationAviabilityCursor.Decode(&accommodation); err != nil {
+			pr.logger.Println(err)
+			return nil, err
+		}
+		return &accommodation, nil
 	}
-
+	return nil, errors.New("No result")
 }
 func (pr *AviabilityRepo) GetAllforAccomendation(xtx context.Context, in *protos.GetAllRequest) ([]*protos.CheckSet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

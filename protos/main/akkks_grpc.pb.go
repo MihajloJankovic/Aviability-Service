@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: akkks.proto
 
-package pakets
+package ssf
 
 import (
 	context "context"
@@ -28,7 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccommodationAviabilityClient interface {
-	GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*Emptyb, error)
+	GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckSet, error)
 	GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyLista3, error)
 	SetAccommodationAviability(ctx context.Context, in *CheckSet, opts ...grpc.CallOption) (*Emptyb, error)
 }
@@ -41,8 +41,8 @@ func NewAccommodationAviabilityClient(cc grpc.ClientConnInterface) Accommodation
 	return &accommodationAviabilityClient{cc}
 }
 
-func (c *accommodationAviabilityClient) GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*Emptyb, error) {
-	out := new(Emptyb)
+func (c *accommodationAviabilityClient) GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckSet, error) {
+	out := new(CheckSet)
 	err := c.cc.Invoke(ctx, AccommodationAviability_GetAccommodationCheck_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -72,7 +72,7 @@ func (c *accommodationAviabilityClient) SetAccommodationAviability(ctx context.C
 // All implementations must embed UnimplementedAccommodationAviabilityServer
 // for forward compatibility
 type AccommodationAviabilityServer interface {
-	GetAccommodationCheck(context.Context, *CheckRequest) (*Emptyb, error)
+	GetAccommodationCheck(context.Context, *CheckRequest) (*CheckSet, error)
 	GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyLista3, error)
 	SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error)
 	mustEmbedUnimplementedAccommodationAviabilityServer()
@@ -82,7 +82,7 @@ type AccommodationAviabilityServer interface {
 type UnimplementedAccommodationAviabilityServer struct {
 }
 
-func (UnimplementedAccommodationAviabilityServer) GetAccommodationCheck(context.Context, *CheckRequest) (*Emptyb, error) {
+func (UnimplementedAccommodationAviabilityServer) GetAccommodationCheck(context.Context, *CheckRequest) (*CheckSet, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccommodationCheck not implemented")
 }
 func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyLista3, error) {

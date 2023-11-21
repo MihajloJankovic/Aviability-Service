@@ -17,7 +17,7 @@ type myAviabilityServer struct {
 func NewServer(l *log.Logger, r *AviabilityRepo) *myAviabilityServer {
 	return &myAviabilityServer{*new(protos.UnimplementedAccommodationAviabilityServer), l, r}
 }
-func (s myAviabilityServer) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.Emptyb, error) {
+func (s myAviabilityServer) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.CheckSet, error) {
 	out, err := s.repo.GetAccommodationCheck(xtx, in)
 	if err != nil {
 		s.logger.Println(err)

@@ -25,13 +25,13 @@ func (s myAviabilityServer) GetAccommodationCheck(xtx context.Context, in *proto
 	}
 	return out, nil
 }
-func (s myAviabilityServer) GetAllforAccomendation(ctx context.Context, in *protos.GetAllRequest) (*protos.DummyLista, error) {
+func (s myAviabilityServer) GetAllforAccomendation(ctx context.Context, in *protos.GetAllRequest) (*protos.DummyLista3, error) {
 	out, err := s.repo.GetAllforAccomendation(ctx, in)
 	if err != nil {
 		s.logger.Println(err)
 		return nil, err
 	}
-	ss := new(protos.DummyLista)
+	ss := new(protos.DummyLista3)
 	ss.Dummy = out
 	return ss, nil
 }

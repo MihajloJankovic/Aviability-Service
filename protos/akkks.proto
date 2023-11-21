@@ -3,10 +3,10 @@ syntax = "proto3";
 option go_package = "../main";
 service AccommodationAviability {
   rpc GetAccommodationCheck(CheckRequest) returns (Emptyb);
-  rpc GetAllforAccomendation(GetAllRequest) returns (DummyLista);
+  rpc GetAllforAccomendation(GetAllRequest) returns (DummyLista3);
   rpc SetAccommodationAviability(CheckSet) returns (Emptyb);
 }
-message DummyLista {
+message DummyLista3 {
   repeated CheckSet dummy = 1;
 }
 message  CheckRequest {

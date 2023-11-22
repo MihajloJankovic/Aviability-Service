@@ -67,7 +67,7 @@ func (pr *AviabilityRepo) Ping() {
 	fmt.Println(databases)
 }
 
-func (pr *AviabilityRepo) DeleteByUser(xtx context.Context, in *protos.DeleteRequest) (*protos.Emptyb, error) {
+func (pr *AviabilityRepo) DeleteByUser(xtx context.Context, in *protos.DeleteRequestb) (*protos.Emptyb, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

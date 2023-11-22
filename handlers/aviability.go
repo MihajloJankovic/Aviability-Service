@@ -35,7 +35,7 @@ func (s myAviabilityServer) GetAllforAccomendation(ctx context.Context, in *prot
 	ss.Dummy = out
 	return ss, nil
 }
-func (s myAviabilityServer) DeleteByUser(ctx context.Context, in *protos.DeleteRequest) (*protos.Emptyb, error) {
+func (s myAviabilityServer) DeleteByUser(ctx context.Context, in *protos.DeleteRequestb) (*protos.Emptyb, error) {
 	out, err := s.repo.DeleteByUser(ctx, in)
 	if err != nil {
 		s.logger.Println(err)

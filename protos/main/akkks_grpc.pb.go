@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: akkks.proto
 
-package fff
+package maa
 
 import (
 	context "context"
@@ -32,7 +32,7 @@ type AccommodationAviabilityClient interface {
 	GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckSet, error)
 	GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyLista3, error)
 	SetAccommodationAviability(ctx context.Context, in *CheckSet, opts ...grpc.CallOption) (*Emptyb, error)
-	DeleteByUser(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Emptyb, error)
+	DeleteByUser(ctx context.Context, in *DeleteRequestb, opts ...grpc.CallOption) (*Emptyb, error)
 }
 
 type accommodationAviabilityClient struct {
@@ -70,7 +70,7 @@ func (c *accommodationAviabilityClient) SetAccommodationAviability(ctx context.C
 	return out, nil
 }
 
-func (c *accommodationAviabilityClient) DeleteByUser(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Emptyb, error) {
+func (c *accommodationAviabilityClient) DeleteByUser(ctx context.Context, in *DeleteRequestb, opts ...grpc.CallOption) (*Emptyb, error) {
 	out := new(Emptyb)
 	err := c.cc.Invoke(ctx, AccommodationAviability_DeleteByUser_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -86,7 +86,7 @@ type AccommodationAviabilityServer interface {
 	GetAccommodationCheck(context.Context, *CheckRequest) (*CheckSet, error)
 	GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyLista3, error)
 	SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error)
-	DeleteByUser(context.Context, *DeleteRequest) (*Emptyb, error)
+	DeleteByUser(context.Context, *DeleteRequestb) (*Emptyb, error)
 	mustEmbedUnimplementedAccommodationAviabilityServer()
 }
 
@@ -103,7 +103,7 @@ func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context
 func (UnimplementedAccommodationAviabilityServer) SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetAccommodationAviability not implemented")
 }
-func (UnimplementedAccommodationAviabilityServer) DeleteByUser(context.Context, *DeleteRequest) (*Emptyb, error) {
+func (UnimplementedAccommodationAviabilityServer) DeleteByUser(context.Context, *DeleteRequestb) (*Emptyb, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteByUser not implemented")
 }
 func (UnimplementedAccommodationAviabilityServer) mustEmbedUnimplementedAccommodationAviabilityServer() {
@@ -175,7 +175,7 @@ func _AccommodationAviability_SetAccommodationAviability_Handler(srv interface{}
 }
 
 func _AccommodationAviability_DeleteByUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
+	in := new(DeleteRequestb)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func _AccommodationAviability_DeleteByUser_Handler(srv interface{}, ctx context.
 		FullMethod: AccommodationAviability_DeleteByUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccommodationAviabilityServer).DeleteByUser(ctx, req.(*DeleteRequest))
+		return srv.(AccommodationAviabilityServer).DeleteByUser(ctx, req.(*DeleteRequestb))
 	}
 	return interceptor(ctx, in, info, handler)
 }

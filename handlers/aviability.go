@@ -35,6 +35,14 @@ func (s myAviabilityServer) GetAllforAccomendation(ctx context.Context, in *prot
 	ss.Dummy = out
 	return ss, nil
 }
+func (s myAviabilityServer) DeleteByUser(ctx context.Context, in *protos.DeleteRequest) (*protos.Emptyb, error) {
+	out, err := s.repo.DeleteByUser(ctx, in)
+	if err != nil {
+		s.logger.Println(err)
+		return nil, err
+	}
+	return out, nil
+}
 func (s myAviabilityServer) SetAccommodationAviability(xtx context.Context, in *protos.CheckSet) (*protos.Emptyb, error) {
 
 	if in.GetPricePerPerson() != 0 && in.GetNumberOfPeople() != 0 {

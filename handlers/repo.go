@@ -66,6 +66,23 @@ func (pr *AviabilityRepo) Ping() {
 	}
 	fmt.Println(databases)
 }
+
+func (pr *AviabilityRepo) DeleteByUser(xtx context.Context, in *protos.DeleteRequest) (*protos.Emptyb, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	profileCollection := pr.getCollection()
+
+	// Define the filter to find documents where 'created' is greater than the specified date
+	filter := bson.M{"uid": in.GetUid()}
+	// Perform the find operation
+	_, err := profileCollection.DeleteMany(ctx, filter)
+	if err != nil {
+		return nil, errors.New("Coundnt delete")
+	}
+
+	return new(protos.Emptyb), nil
+}
 func (pr *AviabilityRepo) GetAccommodationCheck(xtx context.Context, in *protos.CheckRequest) (*protos.CheckSet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

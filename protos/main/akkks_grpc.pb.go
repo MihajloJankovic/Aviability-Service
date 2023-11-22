@@ -4,7 +4,7 @@
 // - protoc             v3.19.6
 // source: akkks.proto
 
-package ssf
+package fff
 
 import (
 	context "context"
@@ -22,6 +22,7 @@ const (
 	AccommodationAviability_GetAccommodationCheck_FullMethodName      = "/AccommodationAviability/GetAccommodationCheck"
 	AccommodationAviability_GetAllforAccomendation_FullMethodName     = "/AccommodationAviability/GetAllforAccomendation"
 	AccommodationAviability_SetAccommodationAviability_FullMethodName = "/AccommodationAviability/SetAccommodationAviability"
+	AccommodationAviability_DeleteByUser_FullMethodName               = "/AccommodationAviability/DeleteByUser"
 )
 
 // AccommodationAviabilityClient is the client API for AccommodationAviability service.
@@ -31,6 +32,7 @@ type AccommodationAviabilityClient interface {
 	GetAccommodationCheck(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckSet, error)
 	GetAllforAccomendation(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*DummyLista3, error)
 	SetAccommodationAviability(ctx context.Context, in *CheckSet, opts ...grpc.CallOption) (*Emptyb, error)
+	DeleteByUser(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Emptyb, error)
 }
 
 type accommodationAviabilityClient struct {
@@ -68,6 +70,15 @@ func (c *accommodationAviabilityClient) SetAccommodationAviability(ctx context.C
 	return out, nil
 }
 
+func (c *accommodationAviabilityClient) DeleteByUser(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Emptyb, error) {
+	out := new(Emptyb)
+	err := c.cc.Invoke(ctx, AccommodationAviability_DeleteByUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccommodationAviabilityServer is the server API for AccommodationAviability service.
 // All implementations must embed UnimplementedAccommodationAviabilityServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type AccommodationAviabilityServer interface {
 	GetAccommodationCheck(context.Context, *CheckRequest) (*CheckSet, error)
 	GetAllforAccomendation(context.Context, *GetAllRequest) (*DummyLista3, error)
 	SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error)
+	DeleteByUser(context.Context, *DeleteRequest) (*Emptyb, error)
 	mustEmbedUnimplementedAccommodationAviabilityServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedAccommodationAviabilityServer) GetAllforAccomendation(context
 }
 func (UnimplementedAccommodationAviabilityServer) SetAccommodationAviability(context.Context, *CheckSet) (*Emptyb, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetAccommodationAviability not implemented")
+}
+func (UnimplementedAccommodationAviabilityServer) DeleteByUser(context.Context, *DeleteRequest) (*Emptyb, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteByUser not implemented")
 }
 func (UnimplementedAccommodationAviabilityServer) mustEmbedUnimplementedAccommodationAviabilityServer() {
 }
@@ -159,6 +174,24 @@ func _AccommodationAviability_SetAccommodationAviability_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccommodationAviability_DeleteByUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccommodationAviabilityServer).DeleteByUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccommodationAviability_DeleteByUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccommodationAviabilityServer).DeleteByUser(ctx, req.(*DeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccommodationAviability_ServiceDesc is the grpc.ServiceDesc for AccommodationAviability service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -177,6 +210,10 @@ var AccommodationAviability_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetAccommodationAviability",
 			Handler:    _AccommodationAviability_SetAccommodationAviability_Handler,
+		},
+		{
+			MethodName: "DeleteByUser",
+			Handler:    _AccommodationAviability_DeleteByUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

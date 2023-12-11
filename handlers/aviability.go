@@ -143,3 +143,30 @@ func (s myAviabilityServer) SetAccommodationAviability(xtx context.Context, in *
 		}
 	}
 }
+func (s myAviabilityServer) GetallbyIDandPrice(ctx context.Context, in *protos.PriceAndIdRequest) (*protos.DummyLista3, error) {
+	// Validacija UID
+	if !isValidUID(in.GetId()) {
+		return nil, errors.New("Invalid UID")
+	}
+
+	// Validacija cene
+	if !isValidPrice(int32(in.GetMinPrice())) || !isValidPrice(int32(in.GetMaxPrice())) {
+		return nil, errors.New("Invalid price range")
+	}
+
+	// Dohvati podatke iz baze pomoću repo funkcije
+	out, err := s.repo.GetallbyIDandPrice(ctx, in)
+	if err != nil {
+		s.logger.Println(err)
+		return nil, err
+	}
+
+	// Ako nema rezultata, možete vratiti odgovarajuću grešku ili praznu listu
+	if out == nil || len(out.Dummy) == 0 {
+		return &protos.DummyLista3{
+			Dummy: []*protos.CheckSet{},
+		}, nil
+	}
+
+	return out, nil
+}

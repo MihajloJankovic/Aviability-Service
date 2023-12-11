@@ -6,6 +6,7 @@ service AccommodationAviability {
   rpc GetAllforAccomendation(GetAllRequest) returns (DummyLista3);
   rpc SetAccommodationAviability(CheckSet) returns (Emptyb);
   rpc DeleteByUser(DeleteRequestb) returns (Emptyb);
+  rpc GetallbyIDandPrice(PriceAndIdRequest) returns (DummyLista3);
 }
 message DummyLista3 {
   repeated CheckSet dummy = 1;
@@ -31,5 +32,12 @@ message  CheckSet {
 
 
 }
+
+message PriceAndIdRequest {
+  string id = 1;
+  float min_price = 2;
+  float max_price = 3;
+}
+
 message  Emptyb {
 }

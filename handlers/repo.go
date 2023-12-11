@@ -171,3 +171,45 @@ func (pr *AviabilityRepo) getCollection() *mongo.Collection {
 	profileCollection := profileDatabase.Collection("aviability")
 	return profileCollection
 }
+
+func (pr *AviabilityRepo) GetallbyIDandPrice(ctx context.Context, in *protos.PriceAndIdRequest) (*protos.DummyLista3, error) {
+	avaCollection := pr.getCollection()
+
+	// Prilagodi filter prema tvojim potrebama
+	filter := bson.M{
+		"uid": in.GetId(),
+		"$and": []bson.M{
+			{"price_per_person": bson.M{"$gte": in.GetMinPrice()}},
+			{"price_per_person": bson.M{"$lte": in.GetMaxPrice()}},
+		},
+	}
+
+	cursor, err := avaCollection.Find(ctx, filter)
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var accommodationAvailabilities []*protos.CheckSet
+
+	for cursor.Next(ctx) {
+		var accommodation protos.CheckSet
+		if err := cursor.Decode(&accommodation); err != nil {
+			pr.logger.Println(err)
+			return nil, err
+		}
+		accommodationAvailabilities = append(accommodationAvailabilities, &accommodation)
+	}
+
+	if err := cursor.Err(); err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+
+	dummyResponse := &protos.DummyLista3{
+		Dummy: accommodationAvailabilities,
+	}
+
+	return dummyResponse, nil
+}

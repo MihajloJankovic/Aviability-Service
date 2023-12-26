@@ -157,7 +157,26 @@ func (pr *AviabilityRepo) SetAccommodationAviability(xtx context.Context, in *pr
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	avaCollection := pr.getCollection()
+	// Define the filter to find documents where 'created' is greater than the specified date
+	filter := bson.D{
+		{"from", bson.D{
+			{"$lte", in.GetFrom()},
+		}},
+		{"to", bson.D{
+			{"$gte", in.GetTo()},
+		}},
+	}
+	// Perform the find operation
+	accommodationAviabilityCursor, err := avaCollection.Find(ctx, filter)
+	if err != nil {
+		log.Println(err)
+	}
+	defer accommodationAviabilityCursor.Close(ctx)
 
+	for accommodationAviabilityCursor.Next(ctx) {
+		return nil, errors.New("there is already avaibility for specific date,change range")
+
+	}
 	result, err := avaCollection.InsertOne(ctx, &in)
 	if err != nil {
 		pr.logger.Println(err)

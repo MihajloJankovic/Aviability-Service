@@ -161,7 +161,7 @@ func (pr *AviabilityRepo) SetAccommodationAviability(xtx context.Context, in *pr
 	filter := bson.D{
 		{"from", bson.D{
 			{"$lte", in.GetFrom()},
-		}},
+		}}, {"uid", in.Uid},
 		{"to", bson.D{
 			{"$gte", in.GetTo()},
 		}},
